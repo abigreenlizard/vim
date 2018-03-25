@@ -23,24 +23,27 @@ set incsearch	"Highlight next match when searching
 set ignorecase	"Make search case insensitive
 set smartcase
 set updatetime=100
+set mouse=a
+let g:python3_host_prog='/bin/python3'
+set t_Co=256
 
 "set ruler
-"set wrap lbr 				" Wrap on words.
-"filetype indent on   "indentation stuff tab now two spaces
+set wrap lbr 				" Wrap on words.
+filetype indent on   "indentation stuff
 "set nowrap
 set tabstop=4
-"set shiftwidth=2
-"set expandtab
 set shiftwidth=4
-let &softtabstop = &shiftwidth
-set smartindent
+set softtabstop=4
+set shiftround
+set expandtab
 set autoindent
+autocmd Filetype python set textwidth=79
 " Enable tab completion:
 "set wildmode=longest,list,full
 set wildmenu
 set wildmode=longest:full,full
 "set wildmode=list:longest,full
-set wildchar=<Tab> wildmenu wildmode=full
+"set wildchar=<Tab> wildmenu wildmode=full
 set wildcharm=<C-Z>
 "Use F10 to cycle buffers
 nnoremap <F10> :b <C-Z>
@@ -49,14 +52,15 @@ nnoremap <F10> :b <C-Z>
 let g:ycm_python_binary_path = '/opt/anaconda/bin/python3'	"You complete me binary - use anaconda python3
 let g:livepreview_previewer = 'mupdf'  "Set Tex Live Preview pdf viewer
 "Map NERDTree toggle to Leader-N
-nnoremap <leader>n :NERDTreeToggle<CR>
+nnoremap <silent> <leader>j :NERDTreeToggle<CR>
 "Jedi python completion
-let g:jedi#completions_command = "<Tab>"
+"let g:jedi#completions_command = "<C-Space>"
 "Airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='hybridline'
 let g:airline_exclude_preview=1
+
 "Syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -66,25 +70,32 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
-"Tagbar
-nnoremap <F8> :TagbarToggle<CR>
-"Fuzzy Find
-nnoremap <leader>t :CtrlPTag<CR>
-"Lightline
-"let g:lightline = {
-"      \ 'colorscheme': 'landscape',
-"      \ 'active': {
-"      \   'left': [ [ 'mode', 'paste' ],
-"      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-"      \ },
-"      \ 'component_function': {
-"      \   'gitbranch': 'fugitive#head'
-"      \ },
-"      \ }
 
+let g:syntastic_python_checkers = ['pylint']
+
+function! ToggleErrors()
+    if empty(filter(tabpagebuflist(), 'getbufvar(v:val, "&buftype") is# "quickfix"'))
+         " No location/quickfix list shown, open syntastic error location panel
+         Errors
+    else
+        lclose
+    endif
+endfunction
+
+nnoremap <silent> <leader>k :call ToggleErrors()<CR>
+
+"Tagbar
+nnoremap <silent> <leader>l :TagbarToggle<CR>
+"Fuzzy Find
+nnoremap <silent> <leader>t :CtrlPTag<CR>
+"Vdebug
+nnoremap <silent> <leader>b :Breakpoint<CR>
+"Python Mode
+let g:pymode_python = 'python3'
+let g:pymode_lint_on_write = 0
 
 " Automatically deletes all tralling whitespace on save.
-autocmd BufWritePre * %s/\s\+$//e
+"autocmd BufWritePre * %s/\s\+$//e
 
 " When shortcut files are updated, renew configs with new material
 autocmd BufWritePost ~/.config/Scripts/folders,~/.config/Scripts/configs !bash ~/.config/Scripts/shortcuts.sh
@@ -95,11 +106,30 @@ nnoremap ; :
 nnoremap : ;
 "inoremap <Space><Space> <Esc>/<++><Enter>"_c4l
 "Cycle through buffers with <Tab> and <S-Tab>
-nnoremap <Tab> :bnext<CR>:redraw<CR>:silent ls<CR>
-nnoremap <S-Tab> :bprevious<CR>:redraw<CR>:silent ls<CR>
+nnoremap <silent> <Tab> :bnext<CR>: redraw<CR>
+nnoremap <silent> <S-Tab> :bprevious<CR>: redraw<CR>
 "fast recursive file find
 "nnoremap <leader>e :edit **/*
 nnoremap <leader>f :find *
+
+"Bindings for system clipboards
+function! ClipboardYank()
+  call system('xsel -i -selection clipboard', @@)
+endfunction
+function! ClipboardPaste()
+  let @@ = system('xsel -o -selection clipboard')
+endfunction
+
+noremap <silent> <Leader>Y y:call ClipboardYank()<cr>
+noremap <silent> <Leader>P :call ClipboardPaste()<cr>p
+vnoremap <silent> <Leader>Y :call ClipboardYank()<cr>
+vnoremap <silent> <Leader>P :call ClipboardPaste()<cr>p
+
+vnoremap <Leader>y "*y
+noremap <Leader>p "*y
+vnoremap <Leader>y "*p
+noremap <Leader>p "*p
+
 """Python
 "PIP8 Settings
 " autocmd Filetype python    :set tabstop=4
