@@ -76,13 +76,13 @@ let g:airline_exclude_preview=1
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-let g:syntastic_javascript_checkers = ['eslint']
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
+let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_python_checkers = ['pylint']
 
 function! ToggleErrors()
@@ -125,23 +125,18 @@ nnoremap <silent> <S-Tab> :bprevious<CR>: redraw<CR>
 "nnoremap <leader>e :edit **/*
 nnoremap <leader>f :find *
 
-"Bindings for system clipboards
-function! ClipboardYank()
-  call system('xsel -i -selection clipboard', @@)
-endfunction
-function! ClipboardPaste()
-  let @@ = system('xsel -o -selection clipboard')
-endfunction
+"""Clipboard mappings
+"Uses + register: the system CLIPBOARD register accessible with <C-V> and <C-C>
+nnoremap <silent> <Leader>Y "+y 
+nnoremap <silent> <Leader>P "+P
+vnoremap <silent> <Leader>Y "+y
+vnoremap <silent> <Leader>P "+P
 
-noremap <silent> <Leader>Y y:call ClipboardYank()<cr>
-noremap <silent> <Leader>P :call ClipboardPaste()<cr>p
-vnoremap <silent> <Leader>Y :call ClipboardYank()<cr>
-vnoremap <silent> <Leader>P :call ClipboardPaste()<cr>p
-
-vnoremap <Leader>y "*y
-noremap <Leader>p "*y
-vnoremap <Leader>y "*p
-noremap <Leader>p "*p
+"Uses * register: the system PRIMARY register accessible with middle-mouse click and highlight-select
+nnoremap <silent> <Leader>y "+y 
+nnoremap <silent> <Leader>p "+P
+vnoremap <silent> <Leader>y "+y
+vnoremap <silent> <Leader>p "+P
 
 """Python
 "PIP8 Settings
