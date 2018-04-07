@@ -8,7 +8,7 @@ set laststatus=0 "set to laststatus=2 for lightline
 "Enable col and line numbering in status
 "set statusline=%<\ %f\ %m%r%y%w%=\ L:\ \%l\/\%L\ C:\ \%c\
 set noshowmode
-"colorscheme landscape
+colorscheme blue
 set showmatch        "highlights matching parantheses
 set number           "Show current line number
 set relativenumber   "Show relative line number

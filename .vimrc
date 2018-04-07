@@ -1,3 +1,10 @@
+"""     ____                       _      __     ___                       """   
+"""    / ___|___  _ __   ___  _ __( )___  \ \   / (_)_ __ ___  _ __ ___    """
+"""   | |   / _ \| '_ \ / _ \| '__|// __|  \ \ / /| | '_ ` _ \| '__/ __|   """
+"""   | |__| (_) | | | | (_) | |    \__ \   \ V / | | | | | | | | | (__    """
+"""    \____\___/|_| |_|\___/|_|    |___/    \_/  |_|_| |_| |_|_|  \___|   """
+"""                                                                        """
+
 """Basic Settings
 "let &rtp = substitute(&rtp, '\.vim\>', '.vimBAK', 'g')
 "let &rtp += '/home/conor/.vimBAK/autoload'
@@ -38,6 +45,9 @@ set shiftround
 set expandtab
 set autoindent
 autocmd Filetype python set textwidth=79
+autocmd Filetype javascript set tabstop=5
+autocmd Filetype javascript set softtabstop=5
+autocmd Filetype javascript set shiftwidth=5
 " Enable tab completion:
 "set wildmode=longest,list,full
 set wildmenu
@@ -58,13 +68,15 @@ nnoremap <silent> <leader>j :NERDTreeToggle<CR>
 "Airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='hybridline'
+"let g:airline_theme='hybridline'
+let g:airline_theme='dark'
 let g:airline_exclude_preview=1
 
 "Syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+let g:syntastic_javascript_checkers = ['eslint']
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -85,9 +97,10 @@ endfunction
 nnoremap <silent> <leader>k :call ToggleErrors()<CR>
 
 "Tagbar
-nnoremap <silent> <leader>l :TagbarToggle<CR>
+nnoremap <silent> <leader>l :TagbarOpenAutoClose<CR><C-W>l
 "Fuzzy Find
-nnoremap <silent> <leader>t :CtrlPTag<CR>
+nnoremap <silent> <leader>t :CtrlPBufTag<CR>
+"let g:ctrlp_working_path_mode = 'wa'
 "Vdebug
 nnoremap <silent> <leader>b :Breakpoint<CR>
 "Python Mode
