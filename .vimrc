@@ -35,7 +35,9 @@ set updatetime=100
 set mouse=a
 let g:python3_host_prog='/bin/python3'
 set t_Co=256
-set inccommand=split    "Open buffer when doing search and replace, nvim only
+if has('nvim')
+    set inccommand=split    "Open buffer when doing search and replace, nvim only
+endif
 
 "set ruler
 set wrap lbr 				" Wrap on words.
@@ -72,8 +74,9 @@ nnoremap <silent> <leader>j :NERDTreeToggle<CR>
 "Airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-"let g:airline_theme='hybridline'
-let g:airline_theme='dark'
+let g:airline_theme='cobalt2'
+let g:airline_theme='hybridline'
+" let g:airline_theme='dark'
 let g:airline_exclude_preview=1
 
 "ALE
@@ -108,12 +111,12 @@ autocmd BufWritePost ~/.config/Scripts/folders,~/.config/Scripts/configs !bash ~
 inoremap jk <Esc>
 nnoremap ; :
 nnoremap : ;
+" nnoremap <silent> <leader>v :bd!|vs<CR>
 "Cycle through buffers with <Tab> and <S-Tab>
 nnoremap <silent> <Tab> :bnext<CR>: redraw<CR>
 nnoremap <silent> <S-Tab> :bprevious<CR>: redraw<CR>
 "clear search highlight on esc
 nnoremap <silent> <esc> :noh<return><esc>
-
 """Clipboard mappings
 "Uses + register: the system CLIPBOARD register accessible with <C-V> and <C-C>
 nnoremap <silent> <Leader>y "+y 
@@ -146,9 +149,12 @@ autocmd FileType tex map <F3> :w !detex \| wc -w<CR>
 autocmd FileType tex inoremap <F3> <Esc>:w !detex \| wc -w<CR>
 
 " deoplete options
-set runtimepath+=~/.vim/bundle/deoplete-jedi/
 set runtimepath+=~/.vim/bundle/deoplete.nvim/
-let g:deoplete#enable_at_startup = 1
+set runtimepath+=~/.vim/bundle/deoplete-jedi/
+set runtimepath+=~/.vim/bundle/LanguageClient-neovim
+if has ('nvim')
+    let g:deoplete#enable_at_startup = 1
+endif
 let g:deoplete#enable_smart_case = 1
 
 if !exists('g:deoplete#omni#input_patterns')
@@ -160,15 +166,18 @@ endif
 "             \ 'disabled_syntaxes', ['Comment', 'String'])
 
 " autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
+let g:LanguageClient_serverCommands = {
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ }
 " set sources
-" let g:deoplete#sources = {}
+let g:deoplete#sources = {}
 " let g:deoplete#sources.cpp = ['LanguageClient']
 " let g:deoplete#sources.python = ['LanguageClient']
 " let g:deoplete#sources.python3 = ['LanguageClient']
 " let g:deoplete#sources.rust = ['LanguageClient']
 " let g:deoplete#sources.c = ['LanguageClient']
 " let g:deoplete#sources.vim = ['vim']
+let g:deoplete#sources.javascript = ['LanguageClient']
 let g:clang_library_path='/usr/lib64/libclang.so'
 " deoplete-racer config
 " let g:deoplete#sources#rust#racer_binary='/Users/aenayet/.cargo/bin/racer'
