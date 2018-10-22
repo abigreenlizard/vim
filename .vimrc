@@ -19,10 +19,9 @@ set laststatus=2 "set to laststatus=2 for lightline
 set noshowmode
 colorscheme landscape
 set showmatch        "highlights matching parantheses
-set number           "Show current line number
-set relativenumber   "Show relative line number
+" set number           "Show current line number
+" set relativenumber   "Show relative line number
 set nrformats=	     "Interpet numbers with leading 0s as decimal
-"let mapleader=","
 let mapleader="\<Space>"
 "set foldmethod=indent
 set backspace=indent,eol,start
@@ -74,9 +73,9 @@ nnoremap <silent> <leader>j :NERDTreeToggle<CR>
 "Airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='cobalt2'
-let g:airline_theme='hybridline'
-" let g:airline_theme='dark'
+ "let g:airline_theme='cobalt2'
+" let g:airline_theme='hybridline'
+ let g:airline_theme='dark'
 let g:airline_exclude_preview=1
 
 "ALE
@@ -141,7 +140,7 @@ augroup END
 """LATEX
 "autostart live preview when a .tex file is opened
 autocmd BufNewFile,BufRead *.tex :LLPStartPreview
-"Turn on spellcheck #NOTE get uk spellcheck pack!
+"Turn on spellcheck 
 autocmd BufNewFile,BufRead *.tex :set spell spelllang=en_uk
 
 " Word count:
